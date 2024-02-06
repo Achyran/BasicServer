@@ -1,0 +1,15 @@
+C:\Users\tobia\Documents\Programming\BasicServer\Client\bin\Debug\net6.0\ClientBase.deps.json
+C:\Users\tobia\Documents\Programming\BasicServer\Client\bin\Debug\net6.0\ClientBase.dll
+C:\Users\tobia\Documents\Programming\BasicServer\Client\bin\Debug\net6.0\ClientBase.pdb
+C:\Users\tobia\Documents\Programming\BasicServer\Client\obj\Debug\net6.0\ClientBase.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\tobia\Documents\Programming\BasicServer\Client\obj\Debug\net6.0\ClientBase.AssemblyInfoInputs.cache
+C:\Users\tobia\Documents\Programming\BasicServer\Client\obj\Debug\net6.0\ClientBase.AssemblyInfo.cs
+C:\Users\tobia\Documents\Programming\BasicServer\Client\obj\Debug\net6.0\ClientBase.csproj.CoreCompileInputs.cache
+C:\Users\tobia\Documents\Programming\BasicServer\Client\obj\Debug\net6.0\ClientBase.dll
+C:\Users\tobia\Documents\Programming\BasicServer\Client\obj\Debug\net6.0\refint\ClientBase.dll
+C:\Users\tobia\Documents\Programming\BasicServer\Client\obj\Debug\net6.0\ClientBase.pdb
+C:\Users\tobia\Documents\Programming\BasicServer\Client\obj\Debug\net6.0\ref\ClientBase.dll
+C:\Users\tobia\Documents\Programming\BasicServer\Client\bin\Debug\net6.0\Packages.dll
+C:\Users\tobia\Documents\Programming\BasicServer\Client\bin\Debug\net6.0\Packages.pdb
+C:\Users\tobia\Documents\Programming\BasicServer\Client\obj\Debug\net6.0\ClientBase.csproj.AssemblyReference.cache
+C:\Users\tobia\Documents\Programming\BasicServer\Client\obj\Debug\net6.0\ClientBase.csproj.CopyComplete
