@@ -22,12 +22,16 @@ namespace BasicClient
             Client client = new Client("127.0.0.1", 5000);
             client.Connect();
 
-            Console.ReadLine();
+            while (true) 
+            {
+                Console.WriteLine($"Connected:{client.IsConnected()}");
+                if(client.recivedQueue.Count > 0) 
+                { 
+                    Package package = client.recivedQueue.Dequeue();
+                    Console.WriteLine($"Received: {package.key}");
+                }
+            }
 
-            Console.WriteLine("sending");
-            client.SendPackage(new Message(client.id, client.id, "Hi me"));
-
-            Console.ReadLine();
         }
     }
 }

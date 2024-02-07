@@ -9,3 +9,4 @@ C:\Users\tobia\Documents\Programming\BasicServer\Packages\obj\Debug\net6.0\Packa
 C:\Users\tobia\Documents\Programming\BasicServer\Packages\obj\Debug\net6.0\refint\Packages.dll
 C:\Users\tobia\Documents\Programming\BasicServer\Packages\obj\Debug\net6.0\Packages.pdb
 C:\Users\tobia\Documents\Programming\BasicServer\Packages\obj\Debug\net6.0\ref\Packages.dll
+C:\Users\tobia\Documents\Programming\BasicServer\Packages\obj\Debug\net6.0\Packages.sourcelink.json

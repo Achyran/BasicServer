@@ -1,4 +1,5 @@
 ﻿using Packages;
+using System.Collections;
 using System.Net.Mail;
 using System.Net.Sockets;
 
@@ -23,17 +24,12 @@ namespace ServerBase
 
 
         public Queue<Package> sendQueue = new Queue<Package>();
+        public Queue<Package> toBeProcessed = new Queue<Package>();
         private bool _stopProcssing = false;
         private bool _isProcessing = false;
         private bool _heartIsBeating = false;
         private bool _stopHeardBeat = false;
         private int _heartRate = 1000;
-        private readonly PackageFactory.Keys[] allowedSendPackaes = 
-        {
-            PackageFactory.Keys.Message,
-            PackageFactory.Keys.Heartbeat
-        };
-
 
         public Server(int port, int maxConnections)
         {
@@ -62,16 +58,12 @@ namespace ServerBase
             clients = new Dictionary<int, Client>();
             for (int i = 0; i <= maxConnections; i++)
             {
-                clients.Add(i, new Client(i, AddToSendque));
+                clients.Add(i, new Client(i, AddToQueue));
             }
         }
-        private void AddToSendque(Package package) 
+        private void AddToQueue(Package package) 
         {
-
-            if(allowedSendPackaes.Contains(package.key))
-            sendQueue.Enqueue(package);
-            else
-                Console.WriteLine($"Tryed to Send Not allowed Packet{package.key}");
+            toBeProcessed.Enqueue(package);
         }
 
         private void TcpConnectCallback(IAsyncResult _result)
@@ -88,7 +80,6 @@ namespace ServerBase
                 if (clients[i].tcp.socket == null)
                 {
                     clients[i].tcp.Connect(_client);
-                    clients[i].StartProcessing();
                     SendPackage(i, new Welcome(i, "Welcome to the server"));
                     return;
                 }
@@ -102,7 +93,7 @@ namespace ServerBase
         {
             foreach (var client in clients)
             {
-                if (client.Value.connectionCompleat)
+                if (client.Value.IsConnected())
                 {
 
                     client.Value.tcp.SendPackage(package);
@@ -120,7 +111,6 @@ namespace ServerBase
                     break;
                 case PackageFactory.Protocoll.udp:
                     throw new NotImplementedException();
-                    break;
                 default:
                     Console.WriteLine($"Protocoll not Supported: {package.protocoll}");
                     break;

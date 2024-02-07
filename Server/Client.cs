@@ -12,22 +12,26 @@ namespace ServerBase
     {
         public int id { private set; get; }
         public Tcp tcp { private set; get; }
-        public bool connectionCompleat { private set; get; }
+        private bool _connected;
+
+        //ToDo: Set This variable throgh the server and make it a config var
+        public float acceptableHeardBeatResponseTime = 10;
+        private DateTime _connectionExporation;
 
         public Queue<Package> packages;
         private bool _processingIsStarted;
         private bool _stopProcessing;
         public delegate void QueueCallback(Package package);
-        private QueueCallback _addToSendQueue;
+        private QueueCallback _addToServerQueue;
 
         public Client(int _id, QueueCallback serverQueue )
         {
             id = _id;
             tcp = new Tcp(id);
 
-            _addToSendQueue = serverQueue;
+            _addToServerQueue = serverQueue;
             _stopProcessing = false;
-            connectionCompleat = false;
+            _connected = false;
             packages = new Queue<Package>();
             _processingIsStarted = false;
             tcp.handler.onPacketRecived += RecevedPackage;
@@ -35,7 +39,28 @@ namespace ServerBase
 
         public void RecevedPackage(Package package)
         {
-            packages.Enqueue(package);
+            switch (package.key)
+            {
+                case PackageFactory.Keys.WelcomeReceved:
+                    _connectionExporation = DateTime.Now.AddSeconds(acceptableHeardBeatResponseTime);
+                    _connected = true;
+                    break;
+                case PackageFactory.Keys.Heartbeat:
+                    _connectionExporation = DateTime.Now.AddSeconds(acceptableHeardBeatResponseTime);
+                    break;
+                    //ToDo: Handle Disconnections
+                default:
+                    _addToServerQueue(package);
+                    break;
+            }
+        }
+
+        public bool IsConnected()
+        {
+            if (_connected && _connectionExporation >= DateTime.Now)
+                return true;
+            Console.WriteLine($"Client {id} is not Connected");
+            return false;
         }
 
         public void Dispose()
@@ -43,59 +68,6 @@ namespace ServerBase
             if (tcp != null)
                 tcp.handler.onPacketRecived -= RecevedPackage;
             _stopProcessing = true;
-        }
-
-        public void ProcessPackage()
-        {
-            if (packages.Count == 0) return;
-
-            Package package = packages.Dequeue();
-
-            switch (package.key)
-            {
-                case PackageFactory.Keys.WelcomeReceved:
-                    ProcessPackage(package as WelcomeReceved);
-                    break;
-
-                case PackageFactory.Keys.Message:
-                    ProcessPackage(package as Message);
-                    break;
-                default:
-                    Console.WriteLine($"Unexpected Package Recived:{package.key}");
-                    break;
-            }
-
-
-        }
-
-        private void ProcessPackage(Message? package)
-        {
-            if (package == null) return;
-            _addToSendQueue(package);
-        }
-
-        private void ProcessPackage(WelcomeReceved? package)
-        {
-            if (package == null) return;
-            connectionCompleat = true;
-            Console.WriteLine($"Connection Compleated on User: {id}");
-        }
-
-
-        
-
-        public void StartProcessing()
-        {
-            if (_processingIsStarted) return;
-
-            _processingIsStarted = true;
-            new Thread(() => {
-                while (true)
-                {
-                    ProcessPackage();
-                    if (_stopProcessing) break;
-                }
-            }).Start();
         }
     }
 }

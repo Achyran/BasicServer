@@ -13,3 +13,4 @@ C:\Users\tobia\Documents\Programming\BasicServer\Client\bin\Debug\net6.0\Package
 C:\Users\tobia\Documents\Programming\BasicServer\Client\bin\Debug\net6.0\Packages.pdb
 C:\Users\tobia\Documents\Programming\BasicServer\Client\obj\Debug\net6.0\ClientBase.csproj.AssemblyReference.cache
 C:\Users\tobia\Documents\Programming\BasicServer\Client\obj\Debug\net6.0\ClientBase.csproj.CopyComplete
+C:\Users\tobia\Documents\Programming\BasicServer\Client\obj\Debug\net6.0\ClientBase.sourcelink.json

@@ -21,3 +21,11 @@ are the consumers in this case. code in there shows you how to use the other 3 p
     - Handle disconnections.
     - Expose clients Ids on the server (to The BasicServer)
     - Disconnect Functions on Client and Server 
+
+
+    ---------------------------------------------------------------------------------------------
+    7.2.24
+
+    Refactored the basic server and client. Now only packages tied to connection are handled by those classes, other packages are put
+    in a to be handledQueue on the server and a recivedQueue on the client. Both queues are public and should be handled Outside of those classses.
+    I have also added a IsConnected bool that is refreshed by the heartbeat. 

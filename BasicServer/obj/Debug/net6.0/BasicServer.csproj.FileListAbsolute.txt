@@ -18,3 +18,4 @@ C:\Users\tobia\Documents\Programming\BasicServer\BasicServer\obj\Debug\net6.0\re
 C:\Users\tobia\Documents\Programming\BasicServer\BasicServer\obj\Debug\net6.0\BasicServer.pdb
 C:\Users\tobia\Documents\Programming\BasicServer\BasicServer\obj\Debug\net6.0\BasicServer.genruntimeconfig.cache
 C:\Users\tobia\Documents\Programming\BasicServer\BasicServer\obj\Debug\net6.0\ref\BasicServer.dll
+C:\Users\tobia\Documents\Programming\BasicServer\BasicServer\obj\Debug\net6.0\BasicServer.sourcelink.json
