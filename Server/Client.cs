@@ -12,10 +12,9 @@ namespace ServerBase
     {
         public int id { private set; get; }
         public Tcp tcp { private set; get; }
+
         private bool _connected;
 
-        //ToDo: Set This variable throgh the server and make it a config var
-        public float acceptableHeardBeatResponseTime = 10;
         private DateTime _connectionExporation;
 
         public Queue<Package> packages;
@@ -42,11 +41,11 @@ namespace ServerBase
             switch (package.key)
             {
                 case PackageFactory.Keys.WelcomeReceved:
-                    _connectionExporation = DateTime.Now.AddSeconds(acceptableHeardBeatResponseTime);
+                    _connectionExporation = DateTime.Now.AddMilliseconds(ServerSettings.timeOutMs);
                     _connected = true;
                     break;
                 case PackageFactory.Keys.Heartbeat:
-                    _connectionExporation = DateTime.Now.AddSeconds(acceptableHeardBeatResponseTime);
+                    _connectionExporation = DateTime.Now.AddMilliseconds(ServerSettings.timeOutMs);
                     break;
                     //ToDo: Handle Disconnections
                 default:

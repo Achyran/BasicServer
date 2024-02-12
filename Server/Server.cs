@@ -7,16 +7,6 @@ namespace ServerBase
 {
     public class Server : IDisposable
     {
-        //ToDo: Create a Logger
-        public enum LogLevel
-        {
-            silent =0,
-            basic = 1,
-            All = 2
-        }
-        public LogLevel logLevel = LogLevel.basic;
-
-        public bool isSilent = false;
         public int port { get; private set; }
         public int maxConnections { get; private set; }
         public TcpListener? tcpListener { get; private set; }
@@ -29,7 +19,6 @@ namespace ServerBase
         private bool _isProcessing = false;
         private bool _heartIsBeating = false;
         private bool _stopHeardBeat = false;
-        private int _heartRate = 1000;
 
         public Server(int port, int maxConnections)
         {
@@ -121,14 +110,14 @@ namespace ServerBase
 
         private void LogSend(int id, Package package)
         {
-            switch (logLevel)
+            switch (ServerSettings.logLevel)
             {
-                case LogLevel.silent:
+                case ServerSettings.LogLevel.silent:
                     break;
-                case LogLevel.basic:
+                case ServerSettings.LogLevel.basic:
                     Console.WriteLine($"Sending to {id}: {package.key}");
                     break;
-                case LogLevel.All:
+                case ServerSettings.LogLevel.All:
                     Console.WriteLine($"Sending to {id}: {package.key} Using {package.protocoll}");
                     break;
                 default:
@@ -181,7 +170,7 @@ namespace ServerBase
                 {
                     if (_stopHeardBeat) break;
                     sendQueue.Enqueue(new Heartbeat());
-                    Thread.Sleep(_heartRate);
+                    Thread.Sleep(ServerSettings.heartRate);
                 }
             }).Start();
         }

@@ -13,8 +13,6 @@ namespace ClientBase
     {
         public string ip { get; private set; }
         private int _port;
-        //ToDo: Make this a config var
-        private float _timeout = 10;
         private DateTime _connectionExparation;
         private bool _isConnected;
         public int id { get; private set; }
@@ -70,7 +68,7 @@ namespace ClientBase
         private void ProcessPackage(Heartbeat? package)
         {
             if (package == null) return;
-            _connectionExparation = DateTime.Now.AddSeconds(_timeout);
+            _connectionExparation = DateTime.Now.AddMilliseconds(ClientSettings.TimeoutMs);
             sendingQueue.Enqueue(new Heartbeat());
             Console.WriteLine("Processed Heartbeat");
         }
