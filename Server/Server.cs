@@ -82,7 +82,7 @@ namespace ServerBase
         {
             foreach (var client in clients)
             {
-                if (client.Value.IsConnected())
+                if (client.Value.GetConnectonStatus() == Client.ConnectionStatus.connected)
                 {
 
                     client.Value.tcp.SendPackage(package);

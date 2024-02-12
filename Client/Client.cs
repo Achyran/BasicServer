@@ -14,7 +14,16 @@ namespace ClientBase
         public string ip { get; private set; }
         private int _port;
         private DateTime _connectionExparation;
-        private bool _isConnected;
+
+        public enum ConnectionStatus
+        {
+            connected = 0,
+            timedout = 1,
+            disconnected = 2
+        }
+
+        private ConnectionStatus _connectionStatus;
+
         public int id { get; private set; }
         public Tcp? _tcp;
         public Queue<Package> recivedQueue;
@@ -35,7 +44,7 @@ namespace ClientBase
 
         public void Connect()
         {
-            _isConnected = false;
+            _connectionStatus = ConnectionStatus.disconnected;
             StartSendingProcess();
             _tcp = new Tcp();
             _tcp.handler.onPacketRecived += RecevedPackage;
@@ -81,7 +90,7 @@ namespace ClientBase
             if(_tcp != null)
             {
                 sendingQueue.Enqueue(new WelcomeReceved());
-                _isConnected = true;
+                _connectionStatus = ConnectionStatus.connected;
                 Console.WriteLine($"Processed Welcome {package._message}");
                 return;
             }
@@ -127,12 +136,12 @@ namespace ClientBase
             }).Start();
         }
 
-        public bool IsConnected()
+        public ConnectionStatus IsConnected()
         {
-            if (_isConnected && _connectionExparation >= DateTime.Now)
-                return true;
+            if (_connectionStatus == ConnectionStatus.connected && _connectionExparation < DateTime.Now)
+                _connectionStatus = ConnectionStatus.timedout;
 
-            return false;
+            return _connectionStatus;
         }
     }
 }

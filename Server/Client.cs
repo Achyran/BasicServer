@@ -12,8 +12,14 @@ namespace ServerBase
     {
         public int id { private set; get; }
         public Tcp tcp { private set; get; }
+        public enum ConnectionStatus
+        {
+            connected = 0,
+            timedout = 1,
+            disconnected = 2
+        }
 
-        private bool _connected;
+        private ConnectionStatus _connectionStatus;
 
         private DateTime _connectionExporation;
 
@@ -30,10 +36,10 @@ namespace ServerBase
 
             _addToServerQueue = serverQueue;
             _stopProcessing = false;
-            _connected = false;
             packages = new Queue<Package>();
             _processingIsStarted = false;
             tcp.handler.onPacketRecived += RecevedPackage;
+            _connectionStatus = ConnectionStatus.disconnected;
         }
 
         public void RecevedPackage(Package package)
@@ -42,7 +48,7 @@ namespace ServerBase
             {
                 case PackageFactory.Keys.WelcomeReceved:
                     _connectionExporation = DateTime.Now.AddMilliseconds(ServerSettings.timeOutMs);
-                    _connected = true;
+                    _connectionStatus = ConnectionStatus.connected;
                     break;
                 case PackageFactory.Keys.Heartbeat:
                     _connectionExporation = DateTime.Now.AddMilliseconds(ServerSettings.timeOutMs);
@@ -54,12 +60,13 @@ namespace ServerBase
             }
         }
 
-        public bool IsConnected()
+        public ConnectionStatus GetConnectonStatus()
         {
-            if (_connected && _connectionExporation >= DateTime.Now)
-                return true;
-            Console.WriteLine($"Client {id} is not Connected");
-            return false;
+
+            if (_connectionStatus == ConnectionStatus.connected && _connectionExporation < DateTime.Now)
+                _connectionStatus = ConnectionStatus.connected;
+
+            return _connectionStatus;
         }
 
         public void Dispose()
