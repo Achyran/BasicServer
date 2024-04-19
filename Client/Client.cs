@@ -78,6 +78,7 @@ namespace ClientBase
         {
             if (package == null) return;
             _connectionExparation = DateTime.Now.AddMilliseconds(ClientSettings.TimeoutMs);
+            _connectionStatus = ConnectionStatus.connected;
             sendingQueue.Enqueue(new Heartbeat());
             Console.WriteLine("Processed Heartbeat");
         }
@@ -91,6 +92,7 @@ namespace ClientBase
             {
                 sendingQueue.Enqueue(new WelcomeReceved());
                 _connectionStatus = ConnectionStatus.connected;
+                _connectionExparation = DateTime.Now.AddMilliseconds(ClientSettings.TimeoutMs);
                 Console.WriteLine($"Processed Welcome {package._message}");
                 return;
             }

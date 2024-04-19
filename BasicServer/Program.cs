@@ -18,7 +18,7 @@ namespace BasicServer
 
             Server server = new Server(5000, 10);
             server.Start();
-            server.logLevel = Server.LogLevel.All;
+            //server.logLevel = Server.LogLevel.All;
 
 
             Console.ReadLine();
